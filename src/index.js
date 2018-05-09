@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ApolloClient, createNetworkInterface, ApolloProvider } from 'react-apollo';
-import registerServiceWorker from './registerServiceWorker';
+import 'semantic-ui-css/semantic.min.css';
 
 import Routes from './routes';
+import registerServiceWorker from './registerServiceWorker';
 
 const networkInterface = createNetworkInterface({
   uri: 'http://localhost:8080/graphql',
