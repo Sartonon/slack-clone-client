@@ -82,7 +82,7 @@ class Register extends Component {
           Register
         </Header>
         <Form>
-          <Form.Field  error={!!usernameError}>
+          <Form.Field error={!!usernameError}>
             <Input
               name="username"
               onChange={this.onChange}
