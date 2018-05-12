@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.11.0",
@@ -29,6 +30,7 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "lint": "eslint src/*.js",
-    "prettier": "prettier --config ./.prettierrc.js --write './src/**/*.js'"
+    "prettier": "prettier --config ./.prettierrc.js --write './src/**/*.js'",
+    "lint": "eslint src"
   }
 }
