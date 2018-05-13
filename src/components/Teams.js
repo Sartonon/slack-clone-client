@@ -1,6 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
 
+const Teams = ({ teams }) => (
+  <TeamWrapper>
+    <TeamList>{teams.map(team)}</TeamList>
+  </TeamWrapper>
+);
+
+const team = ({ id, letter }) => (
+  <TeamListItem key={`team-${id}`}>{letter}</TeamListItem>
+);
+
 const TeamWrapper = styled.div`
   grid-column: 1;
   grid-row: 1 / 4;
@@ -8,14 +18,30 @@ const TeamWrapper = styled.div`
   color: #958993;
 `;
 
-const team = ({ id, letter }) => <li key={`team-${id}`}>{letter}</li>;
+const TeamList = styled.ul`
+  width: 100%;
+  padding-left: 0px;
+  list-style: none;
+`;
 
-const Teams = ({ teams }) => (
-  <TeamWrapper>
-    <ul>
-      {teams.map(team)}
-    </ul>
-  </TeamWrapper>
-);
+const TeamListItem = styled.li`
+  height: 50px;
+  width: 50px;
+  background-color: #676066;
+  color: #fff;
+  margin: auto;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  border-radius: 11px;
+  cursor: pointer;
+  &:hover {
+    border-style: solid;
+    border-width: thick;
+    border-color: #767676;
+  }
+`;
 
 export default Teams;
