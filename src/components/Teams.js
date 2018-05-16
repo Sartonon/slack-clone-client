@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 const Teams = ({ teams }) => (
   <TeamWrapper>
@@ -8,7 +9,9 @@ const Teams = ({ teams }) => (
 );
 
 const team = ({ id, letter }) => (
-  <TeamListItem key={`team-${id}`}>{letter}</TeamListItem>
+  <Link key={`team-${id}`} to={`/view-team/${id}`}>
+    <TeamListItem>{letter}</TeamListItem>
+  </Link>
 );
 
 const TeamWrapper = styled.div`
@@ -16,6 +19,8 @@ const TeamWrapper = styled.div`
   grid-row: 1 / 4;
   background-color: #362234;
   color: #958993;
+  height: 100%;
+  overflow-y: scroll;
 `;
 
 const TeamList = styled.ul`

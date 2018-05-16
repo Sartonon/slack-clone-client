@@ -1,7 +1,16 @@
 import React from 'react';
 import styled from 'styled-components';
+import { Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
-const Channels = ({ teamName, username, channels, users }) => (
+const Channels = ({
+  teamName,
+  username,
+  channels,
+  users,
+  onAddChannelClick,
+  teamId,
+}) => (
   <ChannelWrapper>
     <PushLeft>
       <TeamNameHeader>{teamName}</TeamNameHeader>
@@ -9,8 +18,10 @@ const Channels = ({ teamName, username, channels, users }) => (
     </PushLeft>
     <div>
       <SideBarList>
-        <SideBarListHeader>Channels</SideBarListHeader>
-        {channels.map(channel)}
+        <SideBarListHeader>
+          Channels <Icon onClick={onAddChannelClick} name="add circle" />
+        </SideBarListHeader>
+        {channels.map(c => channel(c, teamId))}
       </SideBarList>
     </div>
     <div>
@@ -24,8 +35,10 @@ const Channels = ({ teamName, username, channels, users }) => (
 
 const Bubble = ({ on = true }) => (on ? <Green>●</Green> : '○');
 
-const channel = ({ id, name }) => (
-  <SideBarListItem key={`channel-${id}`}># {name}</SideBarListItem>
+const channel = ({ id, name }, teamId) => (
+  <Link key={`channel-${id}`} to={`/view-team/${teamId}/${id}`}>
+    <SideBarListItem># {name}</SideBarListItem>
+  </Link>
 );
 
 const user = ({ id, name }) => (
@@ -69,6 +82,7 @@ const SideBarListHeader = styled.li`
 
 const PushLeft = styled.div`
   ${paddingLeft};
+  margin-top: 10px;
 `;
 
 const Green = styled.span`

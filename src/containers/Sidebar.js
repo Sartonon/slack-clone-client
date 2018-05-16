@@ -1,60 +1,80 @@
-import React from 'react';
-import { gql, graphql } from 'react-apollo';
+import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
 import _ from 'lodash';
 import decode from 'jwt-decode';
 
 import Channels from '../components/Channels';
 import Teams from '../components/Teams';
+import AddChannelModal from '../components/AddChannelModal';
+import { allTeamsQuery } from '../graphql/team';
 
-const SideBar = ({ data: { loading, allTeams }, currentTeamId }) => {
-  if (loading) {
-    return null;
-  }
+class SideBar extends Component {
+  state = {
+    openAddChannelModal: false,
+  };
 
-  debugger;
-  const teamIdx = _.findIndex(allTeams, ['id', currentTeamId]);
-  const team = allTeams[teamIdx];
-  let username = '';
+  handleCloseAddChannelModal = () => {
+    this.setState({ openAddChannelModal: false });
+  };
 
-  try {
-    const token = localStorage.getItem('token');
-    const { user } = decode(token);
-    // eslint-disable-next-line prefer-destructuring
-    username = user.username;
-  } catch (err) {
-    // eslint-disable-next-line no-console
-    console.log(err);
-  }
+  handleAddChannelClick = () => {
+    this.setState({ openAddChannelModal: true });
+  };
 
-  return [
-    <Teams
-      key="team-sidebar"
-      teams={allTeams.map(t => ({
-        id: t.id,
-        letter: t.name.charAt(0).toUpperCase(),
-      }))}
-    />,
-    <Channels
-      key="channels-sidebar"
-      teamName={team.name}
-      username={username}
-      channels={team.channels}
-      users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
-    />,
-  ];
-};
+  render() {
+    const {
+      data: { loading, allTeams },
+      currentTeamId,
+    } = this.props;
 
-const allTeamsQuery = gql`
-  {
-    allTeams {
-      id
-      name
-      channels {
-        id
-        name
-      }
+    if (loading) {
+      return null;
     }
-  }
-`;
 
-export default graphql(allTeamsQuery)(SideBar);
+    const teamIdx = currentTeamId
+      ? _.findIndex(allTeams, ['id', parseInt(currentTeamId, 10)])
+      : 0;
+
+    const team = allTeams[teamIdx];
+    let username = '';
+
+    try {
+      const token = localStorage.getItem('token');
+      const { user } = decode(token);
+      // eslint-disable-next-line prefer-destructuring
+      username = user.username;
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    }
+
+    return [
+      <Teams
+        key="team-sidebar"
+        teams={allTeams.map(t => ({
+          id: t.id,
+          letter: t.name.charAt(0).toUpperCase(),
+        }))}
+      />,
+      <Channels
+        key="channels-sidebar"
+        teamName={team.name}
+        username={username}
+        teamId={team.id}
+        channels={team.channels}
+        users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
+        onAddChannelClick={this.handleAddChannelClick}
+      />,
+      <AddChannelModal
+        teamId={team.id}
+        open={this.state.openAddChannelModal}
+        onClose={this.handleCloseAddChannelModal}
+        key="sidebar-add-channel-modal"
+      />,
+    ];
+  }
+}
+
+export default graphql(allTeamsQuery, {
+  options: { fetchPolicy: 'network-only' },
+})(SideBar);
