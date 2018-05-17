@@ -11,7 +11,8 @@ import { ApolloLink } from 'apollo-link';
 import Routes from './routes';
 import registerServiceWorker from './registerServiceWorker';
 
-const httpLink = createHttpLink({ uri: 'http://localhost:8080/graphql' });
+console.log(process.env);
+const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPHQL_API });
 
 const middlewareLink = setContext(() => ({
   headers: {

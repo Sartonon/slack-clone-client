@@ -2,9 +2,9 @@ import React from 'react';
 import { Modal, Input, Button, Form } from 'semantic-ui-react';
 import { withFormik } from 'formik';
 import gql from 'graphql-tag';
+import _ from 'lodash';
 import { compose, graphql } from 'react-apollo';
 import { allTeamsQuery } from '../graphql/team';
-import _ from 'lodash';
 
 const AddChannelModal = ({
   open,

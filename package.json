@@ -2,7 +2,7 @@
   "name": "slack-clone-client",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "http://slack.sartonon.fi/",
+  "homepage": "http://slack.sartonon.fi/",
   "devDependencies": {
     "babel-eslint": "^8.2.3",
     "eslint": "^4.19.1",
