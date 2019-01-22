@@ -20,7 +20,7 @@ const TeamWrapper = styled.div`
   background-color: #362234;
   color: #958993;
   height: 100%;
-  overflow-y: scroll;
+  overflow-y: auto;
 `;
 
 const TeamList = styled.ul`

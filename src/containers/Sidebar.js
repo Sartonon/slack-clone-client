@@ -12,20 +12,24 @@ class Sidebar extends Component {
     openInvitePeopleModal: false,
   };
 
-  handleCloseAddChannelModal = () => {
-    this.setState({ openAddChannelModal: false });
+  toggleAddChannelModal = e => {
+    if (e) {
+      e.preventDefault();
+    }
+
+    this.setState(state => ({
+      openAddChannelModal: !state.openAddChannelModal,
+    }));
   };
 
-  handleAddChannelClick = () => {
-    this.setState({ openAddChannelModal: true });
-  };
+  toggleInvitePeopleModal = e => {
+    if (e) {
+      e.preventDefault();
+    }
 
-  handleInvitePeopleClick = () => {
-    this.setState({ openInvitePeopleModal: true });
-  };
-
-  handleCloseInvitePeopleModal = () => {
-    this.setState({ openInvitePeopleModal: false });
+    this.setState(state => ({
+      openInvitePeopleModal: !state.openInvitePeopleModal,
+    }));
   };
 
   render() {
@@ -33,12 +37,14 @@ class Sidebar extends Component {
     const { openAddChannelModal, openInvitePeopleModal } = this.state;
 
     let username = '';
+    let isOwner = false;
 
     try {
       const token = localStorage.getItem('token');
       const { user } = decode(token);
       // eslint-disable-next-line prefer-destructuring
       username = user.username;
+      isOwner = user.id === team.owner;
     } catch (err) {
       // eslint-disable-next-line no-console
       console.log(err);
@@ -52,19 +58,21 @@ class Sidebar extends Component {
         username={username}
         teamId={team.id}
         channels={team.channels}
+        owner={team.owner}
+        isOwner={isOwner}
         users={[{ id: 1, name: 'slackbot' }, { id: 2, name: 'user1' }]}
-        onAddChannelClick={this.handleAddChannelClick}
-        onInvitePeople={this.handleInvitePeopleClick}
+        onAddChannelClick={this.toggleAddChannelModal}
+        onInvitePeople={this.toggleInvitePeopleModal}
       />,
       <AddChannelModal
         teamId={team.id}
         open={openAddChannelModal}
-        onClose={this.handleCloseAddChannelModal}
+        onClose={this.toggleAddChannelModal}
         key="sidebar-add-channel-modal"
       />,
       <InvitePeopleModal
         teamId={team.id}
-        onClose={this.handleCloseInvitePeopleModal}
+        onClose={this.toggleInvitePeopleModal}
         open={openInvitePeopleModal}
         key="sidebar-invite-people-modal"
       />,

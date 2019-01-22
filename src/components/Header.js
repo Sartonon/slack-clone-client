@@ -14,4 +14,3 @@ const HeaderWrapper = styled.div`
   grid-column: 3;
   grid-row: 1;
 `;
-

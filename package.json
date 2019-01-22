@@ -19,6 +19,8 @@
     "apollo-link": "^1.2.2",
     "apollo-link-context": "^1.0.8",
     "apollo-link-http": "^1.5.4",
+    "apollo-link-ws": "^1.0.12",
+    "apollo-utilities": "^1.1.2",
     "dotenv": "^5.0.1",
     "formik": "^0.11.11",
     "graphql": "^0.13.2",
@@ -34,7 +36,8 @@
     "react-router-dom": "^4.2.2",
     "semantic-ui-css": "^2.3.1",
     "semantic-ui-react": "^0.80.0",
-    "styled-components": "^3.2.6"
+    "styled-components": "^3.2.6",
+    "subscriptions-transport-ws": "^0.9.15"
   },
   "scripts": {
     "start": "react-scripts start",
