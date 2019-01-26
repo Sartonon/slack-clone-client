@@ -5,6 +5,7 @@ import { setContext } from 'apollo-link-context';
 import { ApolloLink, split } from 'apollo-link';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
+import { userInfo } from 'os';
 
 const httpLink = createHttpLink({ uri: process.env.REACT_APP_GRAPHQL_API });
 
@@ -45,6 +46,10 @@ const wsLink = new WebSocketLink({
   uri: 'ws://localhost:8080/subscriptions',
   options: {
     reconnect: true,
+    connectionParams: {
+      token: localStorage.getItem('token'),
+      refreshToken: localStorage.getItem('refreshToken'),
+    },
   },
 });
 

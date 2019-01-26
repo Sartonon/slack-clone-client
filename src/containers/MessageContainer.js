@@ -4,6 +4,7 @@ import gql from 'graphql-tag';
 import { Comment } from 'semantic-ui-react';
 
 import Messages from '../components/Messages';
+import avatar from '../images/elliot.jpg';
 
 const newChannelMessageSubscription = gql`
   subscription($channelId: Int!) {
@@ -20,19 +21,36 @@ const newChannelMessageSubscription = gql`
 
 class MessageContainer extends React.Component {
   componentDidMount() {
+    this.unsubscribe = this.subscribe(this.props.channelId);
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.channelId !== this.props.channelId) {
+      if (this.unsubscribe) {
+        this.unsubscribe();
+      }
+      this.unsubscribe = this.subscribe(this.props.channelId);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.unsubscribe) {
+      this.unsubscribe();
+    }
+  }
+
+  subscribe = channelId =>
     this.props.data.subscribeToMore({
       document: newChannelMessageSubscription,
-      variables: { channelId: this.props.channelId },
+      variables: { channelId },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
-        const newMessage = subscriptionData.data.newChannelMessage;
         return {
           ...prev,
-          messages: [...prev.messages, newMessage],
+          messages: [...prev.messages, subscriptionData.data.newChannelMessage],
         };
       },
     });
-  }
 
   render() {
     const {
@@ -44,6 +62,7 @@ class MessageContainer extends React.Component {
         <Comment.Group>
           {messages.map(m => (
             <Comment key={`${m.id}-message`}>
+              <Comment.Avatar src={avatar} />
               <Comment.Content>
                 <Comment.Author as="a">{m.user.username}</Comment.Author>
                 <Comment.Metadata>
@@ -76,7 +95,10 @@ const messagesQuery = gql`
 `;
 
 export default graphql(messagesQuery, {
-  variables: ({ channelId }) => ({
-    channelId,
+  variables: props => ({
+    channelId: props.channelId,
   }),
+  // options: {
+  //   fetchPolicy: 'network-only',
+  // },
 })(MessageContainer);

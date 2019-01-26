@@ -4,7 +4,7 @@ import { withFormik } from 'formik';
 import gql from 'graphql-tag';
 import _ from 'lodash';
 import { compose, graphql } from 'react-apollo';
-import { allTeamsQuery } from '../graphql/team';
+import { meQuery } from '../graphql/team';
 
 const AddChannelModal = ({
   open,
@@ -84,10 +84,10 @@ export default compose(
             return;
           }
 
-          const data = proxy.readQuery({ query: allTeamsQuery });
-          const teamIdx = _.findIndex(data.allTeams, ['id', teamId]);
-          data.allTeams[teamIdx].channels.push(channel);
-          proxy.writeQuery({ query: allTeamsQuery, data });
+          const data = proxy.readQuery({ query: meQuery });
+          const teamIdx = _.findIndex(data.me.teams, ['id', teamId]);
+          data.me.teams[teamIdx].channels.push(channel);
+          proxy.writeQuery({ query: meQuery, data });
         },
       });
       setSubmitting(false);

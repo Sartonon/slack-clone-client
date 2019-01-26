@@ -13,4 +13,6 @@ export default HeaderComponent;
 const HeaderWrapper = styled.div`
   grid-column: 3;
   grid-row: 1;
+  padding: 10px 0;
+  border-bottom: 1px solid #edecec;
 `;
